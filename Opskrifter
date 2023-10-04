@@ -71,7 +71,18 @@
 </style>
 
 <script>
-    var foods = [test1]; // Tilføj dine egne madideer her
+  
+
+var foods = [
+  "Pizza Margherita",
+  "Spaghetti Bolognese",
+  "Sushi",
+  "Hamburgers",
+  "Chicken Alfredo"
+];
+
+
+
     var currentIndex = 0;
 
     function shuffleArray(array) {
