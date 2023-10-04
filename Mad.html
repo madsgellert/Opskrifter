@@ -15,17 +15,9 @@
   body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: lightcyan;
+    background-color: lightcoral;
   }
-  #background-img {
-    width: 100%;
-    height: 600px;
-    background-image: url("baggrund (1).png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    margin: 40px 0;
-  }
+ 
   h1 {
     font-size: 70px;
     margin-top: 50px;
@@ -39,7 +31,7 @@
     margin: 10px 0;
   }
   button {
-    background-color: darkcyan;
+    background-color: black;
     font-family: Arial, sans-serif, cursive;
     color: white;
     padding: 25px 40px;
@@ -51,9 +43,6 @@
   }
 
   @media (max-width: 767px) {
-    #background-img {
-      height: 400px;
-    }
     h1 {
       font-size: 40px;
     }
@@ -81,38 +70,36 @@ var foods = [
   "Chicken Alfredo"
 ];
 
+var currentIndex = 0;
 
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
 
-    var currentIndex = 0;
+function showPreviousText() {
+  currentIndex--;
+  if (currentIndex < 0) {
+    currentIndex = foods.length - 1;
+  }
+  document.getElementById("text").innerHTML = foods[currentIndex];
+}
 
-    function shuffleArray(array) {
-      for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-      }
-      return array;
-    }
+function showNextText() {
+  currentIndex++;
+  if (currentIndex >= foods.length) {
+    currentIndex = 0;
+  }
+  document.getElementById("text").innerHTML = foods[currentIndex];
+}
 
-    function showPreviousText() {
-      currentIndex--;
-      if (currentIndex < 0) {
-        currentIndex = foods.length - 1;
-      }
-      document.getElementById("text").innerHTML = foods[currentIndex];
-    }
-
-    function showNextText() {
-      currentIndex++;
-      if (currentIndex >= foods.length) {
-        currentIndex = 0;
-      }
-      document.getElementById("text").innerHTML = foods[currentIndex];
-    }
-
-    shuffleArray(foods);
-  </script>
+shuffleArray(foods);
+</script>
 </head>
 <body>
     
@@ -131,11 +118,10 @@ var foods = [
 </script>
 
     
-  <h1>Madideer</h1>
-  <p id="text">Tilføj dine egne madideer og tryk på knapperne for at se dem.</p>
+  <h1>Mad ideer</h1>
+  <p id="text">Tryk næste for at se en tilfældig mad ide</p>
   <button onclick="showPreviousText()">Forrige</button>
   <button onclick="showNextText()">Næste</button>
-  <div id="background-img"></div>
-   <t2>Lavet af [Dit Navn]</t2>
+
 </body>
 </html>
