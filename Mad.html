@@ -1,167 +1,201 @@
+<!DOCTYPE html>
 <html>
 <head>
-    
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Madideer">
-    
-<link rel="apple-touch-icon" sizes="192x192" href="app-ikon2.png">
-<link rel="icon" type="image/png" sizes="192x192" href="app-ikon2.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: lightcoral;
+    }
 
-<link rel="manifest" href="/manifest.json">
-
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: lightcoral;
-  }
- 
-  h1 {
-    font-size: 70px;
-    margin-top: 50px;
-  }
-  t2 {
-    font-size: 20px;
-    margin-top: 50px;
-  }
-  #text {
-    font-size: 40px;
-    margin: 10px 0;
-  }
-  button {
-    background-color: black;
-    font-family: Arial, sans-serif, cursive;
-    color: white;
-    padding: 25px 40px;
-    border: none;
-    border-radius: 20px;
-    margin: 30px;
-    cursor: pointer;
-    font-size: 30px;
-  }
-
-  @media (max-width: 767px) {
     h1 {
-      font-size: 40px;
+      font-size: 70px;
+      margin-top: 50px;
     }
-    t2 {
-      font-size: 20px;
-    }
+
     #text {
+      font-size: 40px;
+      margin: 10px 0;
+    }
+
+    button {
+      background-color: black;
+      font-family: Arial, sans-serif, cursive;
+      color: white;
+      padding: 25px 40px;
+      border: none;
+      border-radius: 20px;
+      margin: 30px;
+      cursor: pointer;
       font-size: 30px;
     }
-    button {
-      padding: 15px 25px;
+
+    .recipe-details {
       font-size: 20px;
+      text-align: left;
+      margin-top: 20px;
     }
-  }
-</style>
 
-<script>
-  
+    .food-type-dropdown {
+      font-size: 20px;
+      padding: 10px;
+      border-radius: 10px;
+    }
 
-var foods = [
-  "Pasta med pesto og kylling",
-  "Carbonara",
+    .recipe-display {
+      text-align: left;
+      padding: 20px;
+    }
 
-  
-  "Margerita pizza ",
-  "Detroit-style pizza",
-  "New York-style pizza",
-  "Pizza med serrano, rucola, straciatella, grøn pesto",
-  "Kartoffelpizza med serrano crunch",
-  "Pizza med mortadella, pistacienødder, straciatella",
-  "Indbagt pizza med kødsovs og spaghetti",
-  "Chorizo-pizza",
-  "Prosciutto cotto-pizza",
-  "Nutella-banan pizza",
+    @media (max-width: 767px) {
+      h1 {
+        font-size: 40px;
+      }
 
-  
-  "Baguette med mozzarella, pesto og prosciutto",
-  "Durum",
-  "Toast",
-  "Fransk hotdog",
-  "Kardemommeboller",
-  "Kyllingklapper med pesto, mayo og iceberg",
-  "Villads' kyllingeburger",
-  "Snackburger på koldhævede boller",
-  "Rugbrød med kartoffel og mayo",
+      #text {
+        font-size: 30px;
+      }
 
-  
-  "Butterchicken med ris",
-  "Kyllingeoverlår med kyllingebouillonris",
-  "Ris i kokosmælk med grøntsager i soya",
-  "Grøn/rød curry med ris",
-  "Kylling i karry",
-
-  
-  "Flæskesteg med kartofler og brun sovs",
-  "Flødekartofler",
-  "Rodfrugter i ovn med kyllingelår",
-  "Pølsemix med bearnaise eller karry",
-  "Kartoffel med porrer i ovn",
-
-  
-  "Tarteletter",
-  "Porretærte",
-  "Nachos med ost og kylling"
-];
-
-
-var currentIndex = 0;
-
-function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
-}
-
-function showPreviousText() {
-  currentIndex--;
-  if (currentIndex < 0) {
-    currentIndex = foods.length - 1;
-  }
-  document.getElementById("text").innerHTML = foods[currentIndex];
-}
-
-function showNextText() {
-  currentIndex++;
-  if (currentIndex >= foods.length) {
-    currentIndex = 0;
-  }
-  document.getElementById("text").innerHTML = foods[currentIndex];
-}
-
-shuffleArray(foods);
-</script>
+      button {
+        padding: 15px 25px;
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-        // Registreringen lykkedes
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-        // Registreringen fejlede
-        console.log('ServiceWorker registration failed: ', err);
-      });
-    });
-  }
-</script>
-
-    
   <h1>Mad ideer</h1>
-  <p id="text">Tryk næste for at se en tilfældig mad ide</p>
-  <button onclick="showPreviousText()">Forrige</button>
-  <button onclick="showNextText()">Næste</button>
+  <div class="food-type-dropdown">
+    <label for="foodType">Vælg type af mad: </label>
+    <select id="foodType"></select>
+  </div>
+  <p id="text"></p>
+  <button id="previousButton">Forrige</button>
+  <button id="nextButton">Næste</button>
+  <div id="recipeDetails" class="recipe-details"></div>
+  
+  <div class="recipe-display">
+    <h2>Opskrift:</h2>
+    <p id="recipeDescription"></p>
+  </div>
 
+  <script>
+    var data = {
+      "": { // Tom streng som standard
+        "": "" // Tom streng som standard
+      },
+      "Pizza": {
+        "Margerita": "Opskrift 1",
+        "Serrano, rucola, straciatella, grøn pesto": "Opskrift 2",
+        "Detroit-style": "Opskrift 3",
+        "Kartoffelpizza med serrano crunch": "Opskrift 4",
+        "Mortadella, pistacienødder, straciatella": "Opskrift 5",
+        "Indbagt pizza med kødsovs og spaghetti": "Opskrift 6",
+        "Chorizo": "Opskrift x",
+        "Prosciutto cotto": "Opskrift x",
+        "Nutella-bana": "Opskrift x"
+
+      },
+      "Pasta": {
+        "Pasta med pesto og kylling": "Opskrift 3",
+        "Carbonara": "Opskrift x"
+    
+      },
+      "Brød": {
+        "Baguette med mozzarella, pesto og prosciutto": "Opskrift 3",
+        "Durum": "Opskrift x",
+        "Toast": "Opskrift x",
+        "Fransk hotdog": "Opskrift x",
+        "Koldhævede kardemommeboller": "Opskrift x",
+        "Kyllingklapper med pesto, mayo og iceberg": "Opskrift x",
+        "Villads' kyllingeburger": "Opskrift x",
+        "Snackburger på koldhævede boller": "Opskrift x",
+        "Rugbrød med kartoffel og mayo": "Opskrift x",
+
+         },
+      "Ris": {
+        "Butterchicken med ris": "Opskrift 3",
+        "Kyllingeoverlår med kyllingebouillonris": "Opskrift x",
+        "Ris i kokosmælk med grøntsager i soya": "Opskrift x",
+        "Grøn curry med ris": "Opskrift x",
+        "Rød curry med ris": "Opskrift x",
+        "Kylling i karry": "Opskrift x"
+
+      },
+      "Kartoffler": {
+        "Flæskesteg med kartofler og brun sovs": "Opskrift 3",
+        "Flødekartofler": "Opskrift x",
+        "Rodfrugter i ovn med kyllingelår": "Opskrift x",
+        "Pølsemix med bearnaise eller karry": "Opskrift x",
+        "Kartoffel med porrer i ovn": "Opskrift x"
+
+      },
+      "Andet": {
+        "Tarteletter": "Opskrift 3",
+        "Porretærte": "Opskrift x",
+        "Nachos med ost og kylling": "Opskrift x"
+
+      
+        
+      }
+      // Tilføj flere kategorier, retter og opskrifter her
+    };
+
+    var currentCategory = "";
+    var currentRecipeIndex = -1;
+
+    function populateDropdown() {
+      var foodTypeDropdown = document.getElementById("foodType");
+      for (var category in data) {
+        var option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        foodTypeDropdown.appendChild(option);
+      }
+    }
+
+    function showRecipe() {
+      if (currentRecipeIndex === -1) {
+        document.getElementById("text").innerHTML = "";
+        document.getElementById("recipeDetails").style.display = "none";
+        document.getElementById("recipeDescription").innerHTML = "";
+      } else {
+        var categoryData = data[currentCategory];
+        var recipes = Object.keys(categoryData);
+        var currentRecipe = recipes[currentRecipeIndex];
+        
+        document.getElementById("text").innerHTML = currentRecipe;
+        document.getElementById("recipeDetails").style.display = "block";
+        document.getElementById("recipeDescription").innerHTML = categoryData[currentRecipe];
+      }
+    }
+
+    function showNextRecipe() {
+      var categoryData = data[currentCategory];
+      var recipes = Object.keys(categoryData);
+      currentRecipeIndex = (currentRecipeIndex + 1) % recipes.length;
+      showRecipe();
+    }
+
+    function showPreviousRecipe() {
+      var categoryData = data[currentCategory];
+      var recipes = Object.keys(categoryData);
+      currentRecipeIndex = (currentRecipeIndex - 1 + recipes.length) % recipes.length;
+      showRecipe();
+    }
+
+    function changeCategory() {
+      currentCategory = document.getElementById("foodType").value;
+      currentRecipeIndex = 0;
+      showRecipe();
+    }
+
+    populateDropdown();
+
+    document.getElementById("previousButton").addEventListener("click", showPreviousRecipe);
+    document.getElementById("nextButton").addEventListener("click", showNextRecipe);
+    document.getElementById("foodType").addEventListener("change", changeCategory);
+  </script>
 </body>
 </html>
