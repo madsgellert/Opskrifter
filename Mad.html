@@ -80,6 +80,7 @@
   <p id="text"></p>
   <button id="previousButton">Forrige</button>
   <button id="nextButton">Næste</button>
+   <button id="luckyButton">I'm feeling lucky</button>
   <div id="recipeDetails" class="recipe-details"></div>
   
   <div class="recipe-display">
@@ -882,6 +883,31 @@
     document.getElementById("previousButton").addEventListener("click", showPreviousRecipe);
     document.getElementById("nextButton").addEventListener("click", showNextRecipe);
     document.getElementById("foodType").addEventListener("change", changeCategory);
+
+    // Funktionen til at vise en tilfældig opskrift på tværs af alle kategorier
+    function showRandomRecipe() {
+      var allCategories = Object.keys(data).filter(function(category) {
+        return category !== ""; // Filtrer ud blank kategori
+      });
+
+      if (allCategories.length === 0) {
+        alert("Ingen opskrifter tilgængelige.");
+        return;
+      }
+
+      var randomCategoryIndex = Math.floor(Math.random() * allCategories.length);
+      var randomCategory = allCategories[randomCategoryIndex];
+
+      var categoryData = data[randomCategory];
+      var recipes = Object.keys(categoryData);
+      currentCategory = randomCategory;
+      currentRecipeIndex = Math.floor(Math.random() * recipes.length);
+
+      showRecipe();
+    }
+
+    // Lyt efter klik på "I'm feeling lucky" knappen
+    document.getElementById("luckyButton").addEventListener("click", showRandomRecipe);
   </script>
 </body>
 </html>
