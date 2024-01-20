@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Madideer">
+  <link rel="apple-touch-icon" sizes="192x192" href="app-ikon2.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="app-ikon2.png">
+  <link rel="manifest" href="/manifest.json">
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: lightcoral;
+    }
+
+    h1 {
+      font-size: 70px;
+      margin-top: 50px;
+    }
+
+    #text {
+      font-size: 40px;
+      margin: 10px 0;
+    }
+
+    button {
+      background-color: black;
+      font-family: Arial, sans-serif, cursive;
+      color: white;
+      padding: 25px 40px;
+      border: none;
+      border-radius: 20px;
+      margin: 30px;
+      cursor: pointer;
+      font-size: 30px;
+    }
+
+    .recipe-details {
+      font-size: 20px;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .food-type-dropdown {
+      font-size: 20px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .recipe-display {
+      text-align: left;
+      padding: 20px;
+    }
+
+    @media (max-width: 767px) {
+      h1 {
+        font-size: 40px;
+      }
+
+      #text {
+        font-size: 30px;
+      }
+
+      button {
+        padding: 15px 25px;
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Mad ideer</h1>
+  <div class="food-type-dropdown">
+    <label for="foodType">Vælg type af mad: </label>
+    <select id="foodType"></select>
+  </div>
+  <p id="text"></p>
+  <button id="previousButton">Forrige</button>
+  <button id="nextButton">Næste</button>
+  <div id="recipeDetails" class="recipe-details"></div>
+  
+  <div class="recipe-display">
+    <h2>Opskrift:</h2>
+    <p id="recipeDescription"></p>
+  </div>
+
+  <script>
+    // Datastrukturen, hvor du kan tilføje opskrifter og ingredienser
+    var data = {
+
+
+
+      /* Den blanke kasse */
+      "": {},
+
+
+
+
+
+
+      /* ------------Kategori: Pizza--------- */
+      "Pizza": {
+        "Margerita": {
+          "Ingredienser": [
+            "Mutti tomatsovs",
+            "Frisk mozzerella",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør først tomatsovs til pizzadejen",
+            "Påfør dernæst mozzerallaen i klatter",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Serrano rucola": {
+          "Ingredienser": [
+            "Mutti tomatsovs",
+            "Drænet frisk mozzerella",
+            "70g serrano skinke",
+            "Rucola",
+            "Straciatella - lavet af fløde og mozzerella",
+            "Grøn pesto fra Løgimose",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Pizza bages med tomatsovs og mozzerella",
+            "Påfør efter bagning i følgende rækkefølge: rucola, serrano, straciatella, pesto",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Detroit-style": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Kartoffel pizza med serrano crunch": {
+          "Ingredienser": [
+            "1/3 bøtte mascarpone",
+            "Kartoffel skåret i tynde skiver",
+            "Evt drænet frisk mozzerlla",
+            "Serrano bagt sprød i ovn",
+            "Tørret timian eller rosmaring",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør mascarpone og evt. mozzerella samt timian/rosmarin",
+            "Bag pizza - Fordel herefter sprød serrano crunch",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Mortadella": {
+          "Ingredienser": [
+            "Drænet frisk mozzerella",
+            "100g mortadella",
+            "Hakkede pistacienødder lagt i olie",
+            "Straciatella - lavet af fløde og mozzerella",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør mozzerella, mortadella - her kan bunden evt smøres med mascarpone",
+            "Bag pizza",
+            "Tilføj pistacienødde olien og straciatella",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Indbagt pizza med kødsovs og spaghetti": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Chorizo": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Prosciutto cotto": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Nutella-bana": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+      },
+
+
+      /* Kategori: Pasta */
+      "Pasta": {
+        "Pasta med pesto og kylling": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Carbonara": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        // ... (tilføj flere pastaopskrifter her)
+      },
+
+      /* Kategori: Brød */
+      "Brød": {
+        "Baguette med mozzarella, pesto og prosciutto": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Durum": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Toast": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Fransk hotdog": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Koldhævede kardemommeboller": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Kyllingklapper med pesto, mayo og iceberg": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Villads' kyllingeburger": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        // ... (tilføj flere brødopskrifter her)
+      },
+
+      // ... (tilføj flere kategorier og opskrifter efter behov)
+
+
+
+      /* Kategori: Ris */
+      "Ris": {
+        "Butterchicken med ris": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Kyllingeoverlår med kyllingebouillonris": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Ris i kokosmælk med grøntsager i soya": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Grøn curry med ris": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Rød curry med ris": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Kylling i karry": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        }
+      },
+
+      /* Kategori: Kartofler */
+      "Kartoffler": {
+        "Flæskesteg med kartofler og brun sovs": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Flødekartofler": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Rodfrugter i ovn med kyllingelår": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Pølsemix med bearnaise eller karry": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Kartoffel med porrer i ovn": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        }
+      },
+
+      /* Kategori: Andet */
+      "Andet": {
+        "Tarteletter med Hønsekød og Asparges": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Porretærte": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Nachos med ost og kylling": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        }
+      },
+
+      /* Kategori: Dessert */
+      "Dessert": {
+        "Nutella-banan pizza": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Nicecream": {
+          "Ingredienser": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Topping": [
+            "Ingrediens 1",
+            "Ingrediens 2",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Trin 1",
+            "Trin 2",
+            // ... (tilføj flere trin efter behov)
+          ]
+        }
+      },
+
+
+      
+      // ... (afslut dataobjektet)
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+    var currentCategory = "";
+    var currentRecipeIndex = -1;
+
+    // Funktionen til at udfylde dropdown-menuen med kategorier
+    function populateDropdown() {
+      var foodTypeDropdown = document.getElementById("foodType");
+      for (var category in data) {
+        var option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        foodTypeDropdown.appendChild(option);
+      }
+    }
+
+    // Funktionen til at vise opskriften og ingredienserne
+    function showRecipe() {
+      if (currentRecipeIndex === -1) {
+        document.getElementById("text").innerHTML = "";
+        document.getElementById("recipeDetails").style.display = "none";
+        document.getElementById("recipeDescription").innerHTML = "";
+      } else {
+        var categoryData = data[currentCategory];
+        var recipes = Object.keys(categoryData);
+        var currentRecipe = recipes[currentRecipeIndex];
+        
+        if (typeof categoryData[currentRecipe] === "object") {
+          // Dette er en opskrift med ingredienser og fremgangsmåde
+          var recipeHTML = "<strong>Ingredienser:</strong><ul>";
+          categoryData[currentRecipe]["Ingredienser"].forEach(function(ingredient) {
+            recipeHTML += "<li>" + ingredient + "</li>";
+          });
+          recipeHTML += "</ul><strong>Fremgangsmåde:</strong><ol>";
+          categoryData[currentRecipe]["Fremgangsmåde"].forEach(function(step) {
+            recipeHTML += "<li>" + step + "</li>";
+          });
+          recipeHTML += "</ol>";
+          document.getElementById("text").innerHTML = currentRecipe;
+          document.getElementById("recipeDetails").style.display = "block";
+          document.getElementById("recipeDescription").innerHTML = recipeHTML;
+        } else {
+          // Dette er en almindelig opskriftsbeskrivelse
+          document.getElementById("text").innerHTML = currentRecipe;
+          document.getElementById("recipeDetails").style.display = "block";
+          document.getElementById("recipeDescription").innerHTML = categoryData[currentRecipe];
+        }
+      }
+    }
+
+    // Funktionen til at vise næste opskrift
+    function showNextRecipe() {
+      var categoryData = data[currentCategory];
+      var recipes = Object.keys(categoryData);
+      currentRecipeIndex = (currentRecipeIndex + 1) % recipes.length;
+      showRecipe();
+    }
+
+    // Funktionen til at vise forrige opskrift
+    function showPreviousRecipe() {
+      var categoryData = data[currentCategory];
+      var recipes = Object.keys(categoryData);
+      currentRecipeIndex = (currentRecipeIndex - 1 + recipes.length) % recipes.length;
+      showRecipe();
+    }
+
+    // Funktionen til at ændre kategorien
+    function changeCategory() {
+      currentCategory = document.getElementById("foodType").value;
+      currentRecipeIndex = 0;
+      showRecipe();
+    }
+
+    // Udfyld dropdown-menuen
+    populateDropdown();
+
+    // Lyt efter klik på knapper og kategoriændringer
+    document.getElementById("previousButton").addEventListener("click", showPreviousRecipe);
+    document.getElementById("nextButton").addEventListener("click", showNextRecipe);
+    document.getElementById("foodType").addEventListener("change", changeCategory);
+  </script>
+</body>
+</html>
