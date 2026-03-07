@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Madopskrifter">
+  <link rel="apple-touch-icon" sizes="192x192" href="app-ikon2.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="app-ikon2.png">
+  <link rel="manifest" href="/manifest.json">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: lightcoral;
+    }
+
+    h1 {
+      font-size: 70px;
+      margin-top: 50px;
+    }
+
+    #text {
+      font-size: 40px;
+      margin: 10px 0;
+    }
+
+    button {
+      background-color: black;
+      font-family: Arial, sans-serif, cursive;
+      color: white;
+      padding: 18px 28px;
+      border: none;
+      border-radius: 20px;
+      margin: 8px;
+      cursor: pointer;
+      font-size: 26px;
+    }
+
+    .recipe-details {
+      font-size: 20px;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .food-type-dropdown {
+      font-size: 20px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .recipe-display {
+      text-align: left;
+      padding: 20px;
+    }
+
+    @media (max-width: 767px) {
+      h1 {
+        font-size: 40px;
+      }
+
+      #text {
+        font-size: 30px;
+      }
+
+      button {
+        padding: 15px 25px;
+        font-size: 20px;
+      }
+    }
+
+    /* Compact layout tweaks for nav and scaling controls */
+  #navButtons { display:flex; gap:8px; justify-content:center; margin:6px 0; flex-wrap:wrap; }
+  #navButtons button { margin:0; padding:12px 18px; font-size:20px; }
+
+  /* make scaling controls the same visual size as ingredient text */
+  #scalingControls { display:none; margin-top:6px; gap:6px; align-items:center; justify-content:center; flex-wrap:wrap; font-size:16px; }
+  #scalingControls label { margin-right:6px; font-weight:600; font-size:inherit; }
+  #scalingControls input { width:70px; margin-right:6px; padding:4px 6px; font-size:inherit; line-height:1.2; }
+  #scalingControls button { padding:4px 6px; font-size:inherit; margin:0; border-radius:8px; }
+
+  /* lucky button on its own line and tight spacing */
+  #luckyWrap { text-align:center; margin-top:4px; }
+  #luckyWrap button { margin:0; padding:12px 18px; }
+
+  .recipe-display h2 { font-size:20px; margin-top:6px; }
+  #recipeDescription { margin-top:4px; }
+
+    @media (max-width: 767px) {
+      #navButtons button { padding:10px 14px; font-size:18px; }
+  #scalingControls input { width:58px; }
+  #scalingControls button { padding:4px 6px; font-size:inherit; }
+      .recipe-display h2 { font-size:18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Madopskrifter</h1>
+  <div class="food-type-dropdown">
+    <label for="foodType">Vælg type af mad: </label>
+    <select id="foodType"></select>
+  </div>
+  <p id="text"></p>
+  <div id="navButtons">
+    <button id="previousButton">Forrige</button>
+    <button id="nextButton">Næste</button>
+  </div>
+  <div id="luckyWrap">
+    <button id="luckyButton">Overrask mig!</button>
+  </div>
+  <div id="recipeDetails" class="recipe-details"></div>
+
+  <!-- Discreet single-field scaling controls -->
+  <div id="scalingControls" class="recipe-details" style="display:none; margin-top:10px;">
+    <label for="scaleMultiplier" style="font-weight:600; margin-right:6px;">Skaler</label>
+    <!-- Use text input so both comma and dot decimals are accepted reliably across locales -->
+    <input id="scaleMultiplier" type="text" placeholder="fx 2" style="width:70px; margin-right:8px;" />
+    <button id="scaleButton" style="padding:6px 8px; font-size:14px;">Skaler</button>
+    <button id="resetScaleButton" style="padding:6px 8px; font-size:14px; margin-left:6px;">Nulstil</button>
+  </div>
+
+  <div class="recipe-display">
+    <h2>Opskrift:</h2>
+    <p id="recipeDescription"></p>
+  </div>
+
+  <script>
+    // Datastrukturen, hvor du kan tilføje opskrifter og ingredienser
+    var data = {
+
+
+
+      /* Den blanke kasse */
+      "": {},
+
+
+
+
+      /* ------------Kategori: Pizza--------- */
+      "Pizza": {
+
+      "Jons håndæltede 48 timers pizzadej - 5 deje": {
+        "Ingredienser": [
+          "500 g vand",
+          "800 g rød Caputo mel",
+          "1/3 tsk tørgær eller 2-2.5 g frisk gær",
+          "20 g fint salt"
+        ],
+        "Fremgangsmåde": [
+          "Hæld vand i en skål og opløs saltet i vandet.",
+          "Tilsæt 2 håndfulde mel til vandet og rør med fingrene, indtil det er opløst.",
+          "Tilsæt gæren og rør den ud i blandingen.",
+          "Tilsæt 2-3 håndfulde mel og fold dejen i skålen med fingrene for at ælte luft i.",
+          "Tilsæt yderligere 1 håndfuld mel og fortsæt med at ælte, indtil dejen er fast nok til at flytte til bordet.",
+          "Ælt resten af melet ind i dejen på bordet.",
+          "Ælt dejen med metoden: 4x skub, vend 90°, 4x skub, vend 90°, gentaget i 10 minutter.",
+          "Stram dejen op til en kugle, dæk med en skål og lad hvile i 20-30 minutter.",
+          "Kontroller, at konsistensen er elastisk som modellervoks/tyggegummi, og stram dejen op igen.",
+          "Læg dejen i en lufttæt beholder og opbevar på køl i 2 dage for optimal smag. Alternativt, hvis du springer kølingen over, kan dejen hvile i 30 minutter, opdeles i 5 kugler og hæve i en lufttæt beholder i 8-24 timer.",
+          "Del dejen i 5 lige store klumper (ca. 250 g hver) og bol dem op til kugler.",
+          "Lad kuglerne hæve i mindst 3-5 timer i en lufttæt beholder ved stuetemperatur."
+        ]
+      },
+        
+        "Jons 48 timers pizzadej (62%) på røremaskine - 4 deje": {
+          "Ingredienser": [
+            "600g Caputo pizzamel (fx den røde 'Cuoco')",
+            "375g kold vand",
+            "1,5-2g frisk gær eller 1/2 tsk tørgær",
+            "16 g fint salt"
+          ],
+          "Fremgangsmåde": [
+              "Opløs gær i vandet i en stor skål.",
+              "Tilsæt mel og rør, til alt melet er fugtet.",
+              "Ælt dejen i 10-12 minutter på røremaskine (hjælp med håndæltning hvis nødvendigt). Tilsæt salt nogle minutter før færdigæltet.",
+              "Fold dejen på køkkenbordet og lad den hvile i 20-30 minutter under en skål.",
+              "Spænd dejen op til en fast kugle og læg den i en lufttæt beholder.",
+              "Stil dejen i køleskabet i mindst 48 timer (kan holde 5-6 dage med Caputo-mel).",
+              "3-5 timer før brug: Tag dejen ud, vej 240g pr. pizzakugle, spænd dem op, og lad dem hvile i en lufttæt beholder ved stuetemperatur.",
+            ]
+          },
+
+        "Margerita": {
+          "Ingredienser": [
+            "Mutti tomatsovs",
+            "Frisk mozzerella",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør først tomatsovs til pizzadejen",
+            "Påfør dernæst mozzerallaen i klatter",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Serrano rucola": {
+          "Ingredienser": [
+            "Mutti tomatsovs",
+            "Drænet frisk mozzerella",
+            "70g serrano skinke",
+            "Rucola",
+            "Straciatella - lavet af fløde og mozzerella",
+            "Grøn pesto fra Løgimose",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Pizza bages med tomatsovs og mozzerella",
+            "Påfør efter bagning i følgende rækkefølge: rucola, serrano, straciatella, pesto",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Detroit Pizza": {
+          "Ingredienser": [
+            "280 gram hvedemel",
+            "200 ml vand",
+            "20 gram gær",
+            "1 tsk fint salt",
+            "1 stk tomatsauce",
+            "1 håndfuld kødfyld: pepperoni, skinke, bacon, etc.",
+            "100 gram mozzarella",
+            "200 gram emmenthaler, tern",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Opløs gær i vandet og tilsæt hvedemel efterfulgt af salt - ælt det sammen på røremaskine i 2-3 minutter.",
+            "Sluk så for maskinen i 10 minutter, så dejen lige slapper af og absorberer mere mel.",
+            "Giv den så igen 2-3 minutter, indtil den let slipper kanterne.",
+            "Hæld den herefter i en oliesmurt skål og stil den til hævning. Hævningen kan du med fordel gøre inde i en slukket ovn med ovnlyset tændt. Lad det hæve i 60 minutter.",
+            "Smør din form med olivenolie. Skrab dejen ud i fadet og fold dejen indover sig selv et par gange for at stramme den op og slå luften ud af den.",
+            "Pres forsigtigt dejen ud til kanterne og dæk den med film. Stil den tilbage i den slukkede ovn med ovnlys og giv den en time mere.",
+            "Forvarm ovnen på 250 grader varmluft.",
+            "Fordel revet mozzarella på bunden efterfulgt af tern af emmenthaler.",
+            "Læg pepperoni på og smør striber af tomatsauce over den.",
+            "Sluk for varmluft, men lad ovnen forblive på 250 grader. Bag pizzaen i ovnen i ca. 20 minutter, indtil den er gyldenbrun.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Kartoffel pizza med serrano crunch": {
+          "Ingredienser": [
+            "1/3 bøtte mascarpone",
+            "Kartoffel skåret i tynde skiver",
+            "Evt drænet frisk mozzerlla",
+            "Serrano bagt sprød i ovn",
+            "Tørret timian eller rosmaring",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør mascarpone og evt. mozzerella samt timian/rosmarin",
+            "Bag pizza - Fordel herefter sprød serrano crunch",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Mortadella": {
+          "Ingredienser": [
+            "Drænet frisk mozzerella",
+            "100g mortadella",
+            "Hakkede pistacienødder lagt i olie",
+            "Straciatella - lavet af fløde og mozzerella",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør mozzerella, mortadella - her kan bunden evt smøres med mascarpone",
+            "Bag pizza",
+            "Tilføj pistacienødde olien og straciatella",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        "Indbagt pizza med kødsovs og spaghetti": {
+          "Ingredienser": [
+            "Mozzerella",
+            "Kødsovs",
+            "Spaghetti",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Rul pizzadejen ud på et meldrysset bord.",
+            "Fordel kødsovs, mozerella og kogt spaghetti over dejen.",
+            "Fold dejen sammen, så fyldet er indeni, og luk kanterne godt.",
+            "Bag pizzaen",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Chorizo": {
+          "Ingredienser": [
+            "Mutti tomatsovs",
+            "Drænet frisk mozzerella",
+            "70g chorizo",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør tomatsovs og mozzerella på pizzadejen",
+            "Fordel chorizo på pizzaen",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Prosciutto cotto": {
+          "Ingredienser": [
+            "Mutti tomatsovs",
+            "Frisk drænet mozzerella",
+            "70g prosciutto",
+            "Honning",
+            "Valnødder",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Påfør tomatsovs og mozzerella, prosciutto",
+            "Tilsæt honing og valnødder efter bagning",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Nutella-banan pizza": {
+          "Ingredienser": [
+            "Nutella",
+            "Banan",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Smør Nutella på pizzadejen.",
+            "Skær bananen i skiver og fordel dem over Nutella'en.",
+            "Bag pizza og server straks",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+      },  /* Her slutter denne kategori */
+
+
+      /* Kategori: Pasta */
+      "Pastaretter": {
+
+        "Pasta med pesto og kylling": {
+          "Ingredienser": [
+            "Pasta",
+            "Pesto",
+            "Kylling",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Kog pastaen efter anvisning på pakken.",
+            "Steg kyllingen og skær den i tern.",
+            "Bland pasta, pesto og stegt kylling sammen.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Carbonara": {
+          "Ingredienser": [
+            "150g Spaghetti",
+            "2 æg",
+            "50g parmesan",
+            "Salt",
+            "Peber",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Kog spaghetti efter anvisning på pakken.",
+            "Imens pastaen koger, bland æg, parmesan, salt, peber.",
+            "Når pastaen er færdigkogt og kølet ned til cirka 60 grader, tilsætes æggeblandingen og røres godt rundt.",
+            "Serveres med friskkværnet peber og ekstra salt efter smag.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        // ... (tilføj flere pastaopskrifter her)
+      },     /* Her slutter denne kategori */
+
+      /* Kategori: Brød */
+      "Retter med brød og lign.": {
+
+        
+      "De bedste tarteletter (18 stk)": {
+        "Ingredienser": [
+          "2 dåser aspargesvæde",
+          "3 dl fløde",
+          "4 dl hønsebouillon",
+          "50 g smør",
+          "4 spsk hvedemel",
+          "Salt",
+          "Peber",
+          "500 g hønse- eller kyllingekød",
+          "Asparges (fra dåserne)"
+        ],
+        "Fremgangsmåde": [
+          "Hæld aspargesvæden fra de 2 dåser i en gryde.",
+          "Tilsæt fløde og hønsebouillon og kog op.",
+          "Lav en smørbolle ved at smelte smørret i en separat gryde og tilsætte hvedemelet. Rør grundigt for at undgå klumper.",
+          "Tilsæt smørbollen til væsken i gryden og kog sovsen igennem i 5-10 minutter, mens du pisker godt for at få den ønskede konsistens.",
+          "Smag til med salt og peber.",
+          "Skær hønse- eller kyllingekødet i små stykker og tilsæt det sammen med aspargesene til sovsen. Kog op og lad retten simre, indtil kødet er opvarmet igennem.",
+          "Hæld fyldet i tarteletskaller og server."
+        ]
+      },
+
+        "Porretærte": {
+          "Ingredienser": [
+            "Dej:",
+            "250 g mel",
+            "125 g koldt smør",
+            "1 æg",
+            "1 spsk koldt vand",
+            "Fyld:",
+            "500 g porrer",
+            "Smør til stegning",
+            "Salt og peber efter smag",
+            "3 æg",
+            "2 dl mælk",
+            "100 g revet ost",
+            "Evt. frisk rosmarin eller timian til smag"
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen til 200 grader Celsius.",
+            "Lav dejen ved at smuldre smørret i melet. Tilsæt ægget og koldt vand. Ælt dejen hurtigt sammen, indtil den er ensartet. Pak dejen ind i film og lad den hvile i køleskabet i mindst 30 minutter.",
+            "Rul dejen ud og beklæd en tærteform med dejen. Prik bunden med en gaffel.",
+            "Forbag tærtebunden i ovnen i ca. 10 minutter, indtil den er let gylden.",
+            "Imens tærtebunden bager, rens porrerne og skær dem i tynde skiver. Steg porrerne i smør på panden, indtil de er bløde. Krydr med salt, peber og evt. frisk rosmarin eller timian.",
+            "Fordel de stegte porrer jævnt over den forbagte tærtebund.",
+            "Pisk æggene sammen med mælken. Tilsæt revet ost og rør godt rundt.",
+            "Hæld æggeblandingen over porrerne i tærteformen.",
+            "Bag porretærten i ovnen i ca. 25-30 minutter, indtil den er gylden og fast i midten.",
+            "Server porretærten varm og skåret i portioner."
+          ]
+        },
+        
+         "Tærte med Skinke og Porre": {
+          "Ingredienser": [
+            "100 g hvedemel",
+            "70 g speltmel",
+            "100 g smør",
+            "1 stk æg",
+            "Salt",
+            "200 g skinkestrimler",
+            "5 stk æg",
+            "250 g hytteost",
+            "1 stk porre",
+            "Salt",
+            "Peber"
+          ],
+          "Fremgangsmåde": [
+            "Til tærtedejen: Bland hvedemel, speltmel, smør, æg og en knivspids salt. Saml dejen, og lad den hvile i 30 min.",
+            "Rul dejen ud, placer i et tærtefad, og forbag i ovnen i 10 min. ved 180 °C.",
+            "Pisk æg, hytteost, salt og peber sammen. Bland med skinke og porre.",
+            "Fordel fyldet på tærtebunden, og bag i ovnen i 25-30 min. ved 180 °C.",
+            "Lad tærten køle af i 5-10 min. inden servering."
+          ]
+        },
+
+        "Umut's Vegetariske - Dirty Cowboytoast": {
+          "Ingredienser": [
+            "200 g Anicia linser eller røde linser",
+            "5 løg fintsnittet",
+            "4 fed presset hvidløg",
+            "1 spsk smør",
+            "1 spsk ketchup",
+            "1 spsk Worcestershire sauce",
+            "1 spsk soya",
+            "1 spsk paprika",
+            "1 tsk sort peber",
+            "1 tsk spidskommen",
+            "1 knivspids karry",
+            "2 dl linse-vand",
+            "2 spsk sukker",
+            "50 g parmesan",
+            "50 g vesterhavsost",
+            "8 skiver toastbrød",
+            "2 spsk smør"
+          ],
+          "Fremgangsmåde": [
+            "Kog linserne i 40 minutter, si dem og gem vandet.",
+            "Sautér 1 løg, krydderier og 1 spsk paprika i smør.",
+            "Tilsæt linserne, 2 fed hvidløg, 1 spsk ketchup, 1 spsk Worcestershire sauce, 1 spsk soya og 2 dl linse-vand.",
+            "Lad det koge sammen i 10 minutter. Nu er linsefyldet færdigt.",
+            "Nu laves de bløde løg. Smelt 2 spsk sukker til karamel, tilsæt 4 løg, 2 fed presset hvidløg og 1 tsk sort peber, sautér.",
+            "Simrer i 15 minutter.",
+            "Smør brødet, lav toast med linsefyld, bløde løg og revet ost."
+          ]
+        },
+
+        "Pitabrød med fyld": {
+          "Ingredienser": [
+            "Advokado",
+            "Champignon",
+            "Peberfrugt",
+            "Agurk",
+            "Tomat",
+            "Majs",
+            "Ærter",
+            "Kebab",
+            "Kylling",
+            "Dressing",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Skær advokado, champignon, peberfrugt, agurk og tomat i skiver eller tern.",
+            "Varm kebab og kylling, hvis de ikke allerede er varme.",
+            "Varm pita brød, derefter skær pitabrødene op, så der dannes en lomme.",
+            "Fordel fyldet i pitabrødene.",
+            "Tilsæt dressing efter smag.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Baguette med mozzarella, pesto og prosciutto": {
+          "Ingredienser": [
+            "1 baguette",
+            "Frisk mozzerella",
+            "Pesto",
+            "70g Prosciutto",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Bag baguette i ovn og skær i halve.",
+            "Påfør frisk mozzerella, pesto, prosciutto og evt tomat",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Durum": {
+          "Ingredienser": [
+            "1 tortilla",
+            "Iceberg salat",
+            "Rødløg",
+            "Tomat",
+            "Kebab",
+            "1.5 dl mayonnaise",
+            "2 dl creme fraiche",
+            "0.5 dl vand (hvis dressingen er tyk)",
+            "1 fed hvidløg",
+            "1/4 tsk chili pulver",
+            "1/2 tsk stødt spidskommen",
+            "Salt",
+            "Peber",
+            "Evt 1/2 tsk stødt koriander",
+            "Evt 1 tsk æbleeddike"
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Først laves durum dressingen:",
+            "Bland følgende ingredienser sammen i en skål: mayonnaise, creme fraiche, vand, hvidløg, chili pulver, stødt spidskommen, salt, peber, evt. stødt koriander og evt. æbleeddike.",
+            "Smag til med salt, peber og evt. koriander og æbleeddike.",
+            "Rør godt rundt, indtil dressingen er ensartet.",
+            "Varm tortiliaen.",
+            "Fyld tortillaen med iceberg salat, rødløg, tomater, kebab og durum dressing.",
+            "Fold siderne af tortillaen ind og rul den stramt sammen."
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+
+        "Toast": {
+          "Ingredienser": [
+            "Toastbrød",
+            "Ost",
+            "Kogt skinke",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Tag to skiver toastbrød.",
+            "Læg ost og kogt skinke mellem brødskiverne.",
+            "Rist toasten i en toaster, indtil osten er smeltet og brødet er gyldent.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Fransk hotdog": {
+          "Ingredienser": [
+            "Fransk hotdog-brød",
+            "Tynd pølse",
+            "Dressing (ketchup, remoulade eller fransk dressing)",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Varm hotdog-brødet op eller rist det let.",
+            "Steg den tynde pølse på panden eller grill den.",
+            "Placer den stegte pølse i brødet.",
+            "Top med din foretrukne dressing, som kan være ketchup, remoulade eller fransk dressing.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Kyllingklapper med pesto, mayo og iceberg": {
+          "Ingredienser": [
+            "Rugbrødsskiver",
+            "Pesto",
+            "Mayonnaise",
+            "Kyllingepålæg",
+            "Iceberg salat"
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Rist rugbrødsskiverne sprøde.",
+            "Påfør pesto og mayonnaise på rugbrødsskiverne.",
+            "Læg kyllingepålæg og iceberg salat på halvdelen af rugbrødsskiverne.",
+            "Læg de resterende rugbrødsskiver ovenpå for at lave sandwichen.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Villads' kyllingeburger": {
+          "Ingredienser": [
+            "Burgerboller",
+            "Kyllingebryst skåret i halv tykkelse",
+            "Panko (til panering)",
+            "Mayonnaise",
+            "Tomat i skiver",
+            "Iceberg",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Paner kyllingebrystet i panko og steg det på panden, indtil det er gyldent og gennemstegt.",
+            "Burgerbollerne varmes.",
+            "Samle burgeren med mayonnaise, tomat, salat og det stegte kyllingebryst i burgerbollen.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+        // ... (tilføj flere brødopskrifter her)
+      },  /* Her slutter denne kategori */
+
+
+      /* Kategori: Ris */
+      "Risretter og ramen": {
+        
+      "Ris der ikke klistrer": {
+        "Ingredienser": [
+          "2 spsk olie",
+          "2 dl ris",
+          "Lidt salt",
+          "4 dl vand"
+        ],
+        "Fremgangsmåde": [
+          "Opvarm olie i en gryde.",
+          "Tilsæt ris og lidt salt, og sauter i 1 minut, eller indtil risene bliver hvide.",
+          "Hæld vand i gryden og bring det i kog.",
+          "Rør kort, så risene ikke klistrer til bunden.",
+          "Skru ned på middel varme (trin 5) og kog uden låg i 4 minutter.",
+          "Læg låg på gryden og kog i yderligere 10 minutter.",
+          "Sluk for varmen og lad risene hvile i 5 minutter inden servering."
+        ]
+      },
+
+        "Ramen med oksekød": {
+"Ingredienser": [
+"1 dåse kokosmælk",
+"0.5 liter vand",
+"2-3 tsk gochujang",
+"2-3 fed hvidløg (finthakket eller presset)",
+"2-3 tsk revet ingefær",
+"2 stk. oksekødsbouillonterninger",
+"200 g hakket oksekød",
+"10 stk. pak choi-blade",
+"2 stk. æg",
+"100 g udon-nudler",
+"Lidt sesamolie"
+],
+"Fremgangsmåde": [
+"Kog kokosmælk, vand, gochujang, hvidløg, ingefær og bouillon op i en gryde.",
+"Brun det hakkede oksekød sprødt på en pande ved siden af.",
+"Tilføj pak choi til den varme suppe 3 minutter inden servering.",
+"Kog æggene i 7 minutter, pil dem og halvér dem.",
+"Kog udon-nudlerne møre efter pakkens anvisning og dræn dem.",
+"Fordel nudler i skåle, hæld suppe over og top med kød, æg og sesamolie."
+]
+},
+
+        "Den bedste kylling i karry": {
+          "Ingredienser": [
+            "2 stk. æbler",
+            "3 stk. gulerødder",
+            "0.5 stk. løg",
+            "1 fed hvidløg",
+            "500 g kyllingebryst",
+            "1-2 spsk olie",
+            "3 tsk karry",
+            "2 spsk hvedemel",
+            "1 liter vand",
+            "1 stk. hønsebouillonterning",
+            "0.5 l mælk"
+          ],
+          "Fremgangsmåde": [
+            "Skræl æblerne og skær dem i tern. Riv gulerødderne og snit løget fint. Hak hvidløget. Skær kyllingen i strimler.",
+            "Varm olie i en gryde eller wok, og tilsæt karryen. Steg kyllingen godt igennem under omrøring.",
+            "Tilsæt æbler, gulerødder, løg og hvidløg, og svits det godt igennem.",
+            "Rør hvedemel i og tilsæt derefter vand og bouillonterningen. Lad det koge igennem.",
+            "Tilsæt mælk og smag til med salt, peber og evt. ekstra karry.",
+            "Lad retten simre i ca. 20 minutter.",
+            "Server retten med ris eller flutes og drys evt. med kokos."
+          ]
+        },
+  
+        "Thailandsk Fried Rice Chicken": {
+          "Ingredienser": [
+            "2 kopper kogt jasminris, løse og afkølet",
+            "1 bundt foråsløg, snittet fint",
+            "2 kyllingebrystfileter, skåret i små tern",
+            "2 spsk vegetabilsk olie",
+            "3 fed hvidløg, hakket",
+            "1 løg, fint hakket",
+            "1 rød peberfrugt, i mindre tern",
+            "2 æg, let pisket",
+            "3 spsk sojasauce",
+            "1 spsk fiskesauce",
+            "1 tsk sukker",
+            "1/2 tsk sort peber",
+            "Frisk koriander til pynt",
+            "Limebåde til servering"
+          ],
+          "Fremgangsmåde": [
+            "Varm en wok eller stor stegepande over høj varme. Tilsæt 1 spsk olie, og steg kyllingen, indtil den er gyldenbrun og gennemstegt. Fjern den fra panden, og sæt den til side.",
+            "Tilsæt resterende olie til panden, og steg hvidløg, løg og rød peberfrugt, indtil de er bløde og duftende.",
+            "Skub løg, hvidløg og peberfrugt til side af panden, og tilsæt de let piskede æg. Rør forsigtigt, indtil æggene er kogte og revet.",
+            "Tilsæt ris, stegt kylling, sojasauce, fiskesauce, sukker og sort peber. Bland godt, og steg, indtil risen er opvarmet igennem.",
+            "Server straks, pyntet med frisk koriander og limebåde på siden til ekstra smag."
+          ]
+        },
+
+
+        "Butterchicken med ris": {
+          "Ingredienser": [
+            "500g kyllingebryst i tern",
+            "50g smør",
+            "1 hakket løg",
+            "2 fed hvidløg, knust",
+            "3 spsk tomatpuré",
+            "2 tsk garam masala",
+            "2 dl fløde",
+            "Salt efter smag",
+            "Ris (til servering)",
+            // ... (tilføj evt. flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Steg kyllingetern i smør, tilsæt løg og knust hvidløg.",
+            "Rør tomatpuré og garam masala i.",
+            "Tilsæt fløde og lad retten simre, indtil kyllingen er mørt.",
+            "Smag til med salt og server med kogte ris.",
+            // ... (tilføj evt. flere trin efter behov)
+          ]
+        },
+
+        "Kyllingeoverlår med kyllingebouillonris": {
+          "Ingredienser": [
+            "4 kyllingeoverlår",
+            "1 spsk olivenolie",
+            "1 tsk paprika",
+            "1 tsk løgpulver",
+            "1 tsk hvidløgspulver",
+            "1 tsk tørret oregano",
+            "Salt og peber efter smag",
+            "Ris",
+            "Kyllingebouillon til risene",
+            // ... (tilføj evt. flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Opvarm ovnen til 200 grader.",
+            "Gnid kyllingeoverlårene med olivenolie og krydderier.",
+            "Bag dem i ovnen i ca. 30-40 minutter, indtil de er gyldenbrune og gennemstegte.",
+            "Kog risene med kyllingebouillon i vandet.",
+            "Server kyllingeoverlår over de kogte kyllingebouillonris.",
+            // ... (tilføj evt. flere trin efter behov)
+          ]
+        },
+
+        "Ris i kokosmælk med wok-grøntsager": {
+          "Ingredienser": [
+            "Ris",
+            "1 dåse kokosmælk",
+            "Wok-grøntsagsblanding",
+            "Soyasauce",
+            "Olie til stegning",
+            // ... (tilføj evt. flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Kog risene efter pakkens instruktioner men anvend halv vand, halv kokosmælk.",
+            "Imens risene koger, varm lidt olie op i en wok eller pande.",
+            "Steg wok-grøntsagsblandingen i den varme olie, indtil de er møre, men stadig sprøde.",
+            "Tilsæt sojasauce efter smag og rør godt rundt.",
+            "Server de kogte ris med den stegte wok-grøntsagsblanding over.",
+            // ... (tilføj evt. flere trin efter behov)
+          ]
+        },
+
+        "Grøn curry med ris": {
+          "Ingredienser": [
+            "400 g kyllingebryst, skåret i tern",
+            "1 spiseskefulde grøn currypasta",
+            "400 ml kokosmælk",
+            "1 teske fiskesauce",
+            "1 spiseskefuld sukker",
+            "2 tomater, skåret i strimler",
+            "1 squash skåret i stave",
+            "2 dl hønsebouillon",
+            "Kogte ris til servering",
+            // ... (tilføj evt. flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Hæld 1/3 af kokosmælken i panden og steg ind",
+            "Tilsæt grøn currypasta og steg sammen et par minutter",
+            "Tilføj kylling og steg et par minutter",
+            "Tilføj hønse bouillon og resten af koksmælken og lad det koge lidt",
+            "Tilsæt squash og tomat og kog et par minutter. Smag til med fiskesauce, sukker",
+            // ... (tilføj evt. flere trin efter behov)
+          ]
+        },
+
+        "Thai Red Curry med Ris": {
+          "Ingredienser": [
+            "500 g udbenede kyllingelår, skåret i 1,5 cm tern",
+            "400 ml kokosmælk",
+            "200 g gulerødder, skåret i mundrette stykker",
+            "1 stor løg, skåret i tynde skiver",
+            "2 spiseskefulde rød karrypasta (kan tilpasses efter din krydderitolerance)",
+            "1-2 spiseskefulde friskrevet ingefær",
+            "3 fed hakket hvidløg",
+            "2 spiseskefulde fiskesauce",
+            "1,5 spiseskefulde rørsukker",
+            "1 rød peberfrugt, skåret i strimler",
+            "2 forårsløg, skåret i skrå skiver",
+            "1 håndfuld frisk Thai basilikum",
+            "2 spiseskefulde vegetabilsk olie",
+            "Kogte jasminris til servering"
+          ],
+          "Fremgangsmåde": [
+            "I en stor pande, varm vegetabilsk olie over medium varme. Tilsæt rød karrypasta, hakket ingefær og hakket hvidløg. Sauter i et minut, indtil det bliver aromatisk.",
+            "Tilsæt kyllingetern og brun dem, indtil de er gyldne på alle sider.",
+            "Tilsæt skårede gulerødder og løg, og sauter i yderligere 2-3 minutter, indtil grøntsagerne bliver møre.",
+            "Hæld kokosmælk i panden og tilsæt fiskesauce, og rørsukker. Rør godt rundt og lad det simre i ca. 10-15 minutter, indtil saucen tykner lidt.",
+            "Tilsæt strimlet rød peberfrugt, forårsløg og Thai basilikum, og kog i yderligere 2-3 minutter, indtil peberfrugten er møre.",
+            "Smag til med mere fiskesauce, sukker efter behov.",
+            "Server straks over kogte jasminris."
+          ]
+        },
+
+
+        "Kylling i Karry One Pot": {
+          "Ingredienser": [
+            "450 g kyllingebryst, uden sener",
+            "3 tsk karry",
+            "0,5 tsk paprika",
+            "1 spsk sukker",
+            "0,5 tsk stødt spidskommen",
+            "400 ml kokosmælk",
+            "1 stk hønsebouillonterning"
+          ],
+          "Tilbehør": [
+            "160 g ris",
+            "0,25 bundt frisk persille"
+          ],
+          "Fremgangsmåde": [
+            "Fjern eventuelle sener fra kyllingen.",
+            "Placer kyllingen og alle ingredienser i en gryde. Rør rundt.",
+            "Sæt grydelåget på med en lille sprække. Simrer i 30 minutter.",
+            "Tag gryden af varmen. Brug gafler til at rive kyllingen fra hinanden.",
+            "Sæt gryden tilbage i 5 minutter for et lille opkog. Smag til med salt og peber.",
+            "Tilbered risene som angivet på pakken.",
+            "Server med kylling i karry og frisk persille."
+          ]
+        }
+
+      },  /* Her slutter denne kategori */
+
+      /* Kategori: Kartofler */
+      "Kartoffelretter": {
+
+      "Umuts brunede kartofler": {
+        "Ingredienser": [
+          "155 g sukker",
+          "25 g smør",
+          "1.3 teskefuld salt",
+          "1.3 dl fløde",
+          "1 dl vand",
+          "900 g kartofler"
+        ],
+        "Fremgangsmåde": [
+          "Smelt sukkeret i en gryde, indtil det bliver gyldent.",
+          "Tilsæt smør og salt, og lad det bruse af.",
+          "Kom fløden i lidt ad gangen, og vær forsigtig så karamellen ikke størkner.",
+          "Tilsæt vandet lidt ad gangen og lad det koge igennem, så der dannes en karamellage.",
+          "Når karamellen koger, tilsæt kartoflerne og lad det koge ind, indtil saucen er tyk.",
+          "Husk at vende kartoflerne jævnligt, så de bliver dækket af karamellen."
+        ]
+      },
+        
+        "Umuts flæskesteg": {
+          "Ingredienser": [
+            "Ca. 1.5kg kamsteg med svær",
+            "Salt"
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen til 200 grader varmluft. Placer sværen nedad i det ilfaste fad og dæk den med kogende vand.",
+            "Kom den i ovnen i 20 minutter.",
+            "Vend nu stegen med sværene opad. Placer sølvpapir under stegen for at sikre, at den står lige. Rids sværen uden at ramme kødet, og gnid en god mængde salt mellem sværene.",
+            "Bag stegen i cirka 1,5-2 timer ved 200 grader varmluft, indtil kernetemperaturen er 62 grader (cirka 1 time for en 1,5 kg kamsteg).",
+            "For sprødere svær kan temperaturen hæves til 225-250 grader i de sidste minutter af bagetiden.",
+            "Lad stegen trække i fri luft i 10-15 minutter inden servering."
+          ]
+        },
+        
+        "Sød Kartoffel med Kylling": {
+          "Ingredienser": [
+            "1 stor sødkartoffel",
+            "2 kyllingebrystfileter",
+            "2 spsk creme fraiche",
+            "1 fed hvidløg, presset",
+            "Saften fra 1/2 citron",
+            "Salt",
+            "Peber"
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen til 200 grader Celsius.",
+            "Bag sødkartoffelen på bagepladen i ovnen i 45-60 minutter.",
+            "Steg kyllingebrystfileterne på panden.",
+            "Bland creme fraiche med citronsaft, presset hvidløg, salt og peber.",
+            "Skær sødkartoffelen op og server med kyllingefileterne og citron-creme fraichen.",
+            "Server straks og nyd!"
+          ]
+        },
+
+
+        "Flæskesteg med kartofler og brun sovs": {
+          "Ingredienser": [
+            "Flæseksteg",
+            "1 kg Kartofler",
+            "3 spsk mel",
+            "3 spsk smør",
+            "5 dl bouillon (fra stegen eller grøntsagsbouillon)",
+            "Salt og peber efter smag"
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Steg flæskestegen efter umuts opskrift",
+            "Kog kartofler",
+            "Sovs: I en gryde smeltes smør, tilsæt mel og rør godt rundt. Tilsæt bouillon gradvist under omrøring for at undgå klumper. Lad det simre i et par minutter.",
+            "Smag til med salt og peber.",
+            "Server flæskestegsskiver med kogte kartofler og brun sovs."
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Flødekartofler": {
+          "Ingredienser": [
+            "1 kg kartofler, skrællede og skåret i tynde skiver",
+            "2 dl fløde",
+            "2 dl mælk",
+            "2 fed hakket hvidløg",
+            "Salt og peber efter smag",
+            "Revet muskatnød efter smag",
+            "Evt. revet ost til gratinering"
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen til 200 grader.",
+            "Smør et ovnfast fad med lidt smør eller olie.",
+            "Arranger et lag kartoffelskiver i fadet.",
+            "Bland fløde, mælk, hakket hvidløg, salt, peber og revet muskatnød i en skål.",
+            "Hæld halvdelen af flødeblandingen over kartoflerne.",
+            "Læg endnu et lag kartoffelskiver og hæld resten af flødeblandingen over.",
+            "Hvis ønsket, drys revet ost på toppen for en ekstra lækker gratinering.",
+            "Bag i ovnen i cirka 45-60 minutter, eller indtil kartoflerne er møre og overfladen er gylden og bubbly.",
+            "Server flødekartoflerne som tilbehør til din hovedret."
+          ]
+        },
+
+         "Mørbrad Paprikagryde": {
+          "Ingredienser": [
+            "1 svinemørbrad i tern",
+            "1 stort løg finthakket",
+            "5 skiver bacon i mindre tykker",
+            "4 mellemstore gulerødder i små tern",
+            "1 rød peberfrugt i mindre tern",
+            "1 dåse hakkede tomater",
+            "2,5 dl fløde",
+            "4 tsk paprika",
+            "1 tsk oregano",
+            "200 g cocktailpølser",
+            "1 spsk gastrik eller lidt citronsaft",
+            "Salt og friskkværnet peber"
+          ],
+          "Fremgangsmåde": [
+            "Varm en stegegryde godt op, og kom en klat smør i.",
+            "Brun svinemørbradtern grundigt, og hæld dem i en tallerken.",
+            "Kom løg, bacon, gulerødder og peberfrugt i gryden, og steg et par minutter, indtil baconstykkerne er næsten sprøde.",
+            "Tilsæt hakkede tomater, fløde, paprika og oregano, og lad det koge op.",
+            "Kom kødet tilbage i gryden, skru ned for varmen, læg låg på, og lad paprikagryden simre i 25 minutter.",
+            "Tilsæt cocktailpølser, og lad dem simre med i yderligere fem minutter under låg.",
+            "Smag til med salt, friskkværnet peber, evt. mere paprika samt gastrik eller citronsaft.",
+            "Server evt. med ris til."
+          ]
+        },
+        
+        "Rodfrugter i ovn med kyllingelår": {
+          "Ingredienser": [
+            "500 g kartofler, skrællede og skåret i stave",
+            "300 g gulerødder, skrællede og skåret i stave",
+            "200 g selleri, skrællet og skåret i stave",
+            "2 rødbeder, skrællede og skåret i stave",
+            "4 kyllingelår",
+            "3 spsk olivenolie",
+            "Salt og peber efter smag",
+            "Evt. frisk rosmarin eller timian til smag",
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen til 200 grader.",
+            "Skær alle rodfrugterne i stave og fordel dem på en bageplade.",
+            "Drys olivenolie, salt, peber og eventuelt friske krydderurter over rodfrugterne. Bland godt.",
+            "Placér kyllingelårene ovenpå rodfrugterne.",
+            "Bag i ovnen i cirka 40-50 minutter eller indtil kyllingelårene er gyldne og rodfrugterne er møre.",
+            "Server de ovnbagte rodfrugter med kyllingelår som en lækker og nem hovedret."
+          ]
+        },
+
+        "Pølsemix med karry og løg": {
+          "Ingredienser": [
+            "4 frankfurterpølser",
+            "400 g pommes frites",
+            "2 løg, skåret i små tern",
+            "2 spsk karrypulver",
+            "Salt og peber efter smag",
+            "Olie til stegning"
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen og bag pommes fritesene, indtil de er gyldne og sprøde, i overensstemmelse med pakkens anvisninger.",
+            "Imens pommes fritesene bager, kan du stege frankfurterpølserne på en pande med lidt olie, indtil de er varme og gyldne på alle sider.",
+            "Tilsæt karrypulver til pølserne og rør godt rundt, så karryen bliver jævnt fordelt.",
+            "Når pommes fritesene er klar, anret dem på et serveringsfad.",
+            "Top pommes fritesene med de stegte frankfurterpølser.",
+            "Fordel de rå løg med karry over pølserne og pommes fritesene.",
+            "Smag til med salt og peber efter behov."
+          ]
+        },
+
+        "Ovnbagte kartofler og porrer": {
+          "Ingredienser": [
+            "500 g kartofler, skåret i stave",
+            "2 porrer, skåret i skiver",
+            "2 spsk olivenolie",
+            "1 tsk rosmarin",
+            "1 tsk timian",
+            "Salt og peber efter smag"
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen til 200 grader Celsius.",
+            "I en stor skål, bland kartoflerne og porrerne med olivenolie, rosmarin, timian, salt og peber. Sørg for, at alle grøntsager er jævnt dækket af krydderiblandingen.",
+            "Fordel kartoflerne og porrerne på en bageplade beklædt med bagepapir i et enkelt lag.",
+            "Bag i den forvarmede ovn i ca. 30-35 minutter, eller indtil kartoflerne er gyldne og sprøde.",
+            "Tag ud af ovnen og server straks som en lækker og nem side ret til dine hovedretter."
+          ]
+        }
+      },  /* Her slutter denne kategori */
+
+
+
+      /* Kategori: Andet */
+      "Dressinger + andre retter": {
+
+      "Perfekt brun sovs": {
+        "Ingredienser": [
+          "20 g smør",
+          "3 spsk hvedemel",
+          "2 dl mælk",
+          "2 dl væske fra stegen  eller 1 oksebouillon (fra Lidl) opløst i 2 dl vand",
+          "1 dl kartoffelvand",
+          "Sovsekulør (efter behov)",
+          "1 teskefuld salt",
+          "Friskkværnet peber (efter smag)",
+          "Evt. 1 teskefuld sukker (kan hjælpe med at balancere smagen)"
+        ],
+        "Fremgangsmåde": [
+          "Smelt smørret i en gryde ved lav varme.",
+          "Tilsæt hvedemelet og pisk konstant for at undgå klumper. Lad det stege i 1-2 minutter, så melet får en let brun farve, hvilket giver dybde i smagen.",
+          "Tilsæt langsomt 2 dl mælk og pisk grundigt for at undgå klumper.",
+          "Tilsæt 2 dl væske fra stegen (eller bouillonvand) og 1 dl kartoffelvand. Pisk konstant, så sovsen bliver glat og ensartet.",
+          "Kog sovsen op og lad den simre i ca. 5-10 minutter for at lade smagene udvikle sig og sovsen tykne til den ønskede konsistens. Hvis den bliver for tyk, kan du tilsætte lidt ekstra væske (bouillon, kartoffelvand eller mælk).",
+          "Tilsæt sovsekulør for den ønskede farve. Husk, at lidt kulør går langt, så vær forsigtig med mængden.",
+          "Smag sovsen til med salt og friskkværnet peber. Hvis du vil have en ekstra dybde i smagen, kan du tilføje en lille teskefuld sukker.",
+          "Lad sovsen koge igennem i et par minutter for at sikre, at smagene er godt blandet. Juster konsistensen, hvis nødvendigt, ved at tilføje lidt mere væske."
+        ]
+      },
+        
+      "Hjemmelavet mayo": {
+        "Ingredienser": [
+          "1 æg",
+          "1 tsk salt",
+          "1 tsk Dijon sennep",
+          "1 tsk hvidvinseddike",
+          "Lidt citronsaft",
+          "2 dl olie",
+          "Salt og peber til smag"
+        ],
+        "Fremgangsmåde": [
+          "Slå ægget ud i et stavblenderglas.",
+          "Tilføj salt, Dijon sennep, hvidvinseddike og lidt citronsaft.",
+          "Hæld forsigtigt olien i, så den lægger sig ovenpå.",
+          "Sæt stavblenderen helt i bunden af glasset og tænd den.",
+          "Kør stavblenderen langsomt opad, indtil alt er emulgeret til en cremet mayo.",
+          "Smag til med salt, peber og citronsaft."
+        ]
+      },
+        
+       "Den bedste durum dressing": {
+          "Ingredienser": [
+            "1.5 dl mayonnaise",
+            "2 dl creme fraiche",
+            "0.5 dl vand (valgfrit, hvis dressingen er for tyk)",
+            "1 fed hvidløg",
+            "1/4 tsk chili pulver",
+            "1/2 tsk stødt spidskommen",
+            "Salt",
+            "Peber",
+            "Evt. 1/2 tsk stødt koriander",
+            "Evt. 1 tsk æbleeddike"
+          ],
+          "Fremgangsmåde": [
+            "Bland mayonnaise og creme fraiche i en skål.",
+            "Tilsæt vand, hvis dressingen er for tyk.",
+            "Pres hvidløget og rør det i blandingen.",
+            "Tilsæt chili pulver, stødt spidskommen, salt og peber.",
+            "Tilføj evt. stødt koriander og æbleeddike for ekstra smag.",
+            "Rør alle ingredienser godt sammen og smag til."
+          ]
+        },
+
+        "Nachos med ost og kylling": {
+          "Ingredienser": [
+            "Nachos chips",
+            "200 g kyllingebryst, skåret i små tern",
+            "150 g revet cheddar ost",
+            "Creme fraiche eller guacamole til servering"
+          ],
+          "Fremgangsmåde": [
+            "Forvarm ovnen til 200 grader Celsius.",
+            "Fordel nachos chips i et ensartet lag på en bageplade eller i et ovnfast fad.",
+            "Steg kyllingeternene på en pande, indtil de er gennemstegte og gyldne. Krydr med salt og peber efter smag.",
+            "Fordel de stegte kyllingetern over nachos chipsene.",
+            "Drys revet cheddar ost over nachos og kylling, så det er jævnt fordelt.",
+            "Bag i ovnen i ca. 10-12 minutter, eller indtil osten er smeltet og bubbly.",
+            "Tag nachos ud af ovnen, og server straks.",
+            "Server nachos med creme fraiche eller guacamole som dip."
+          ]
+        }
+
+      },  /* Her slutter denne kategori */
+
+      /* Kategori: Dessert */
+      "Dessert": {
+
+      "Brownies med brunede smør": {
+        "Ingredienser": [
+          "170 g smør",
+          "80 g kakao",
+          "3 æg",
+          "170 g sukker",
+          "120 g brun farin",
+          "100 g hvedemel",
+          "1 knivspids salt",
+          "1 teskefuld vaniljepulver",
+          "90 g hakket chokolade"
+        ],
+        "Fremgangsmåde": [
+          "Smelt smørret i en gryde og lad det brune forsigtigt under omrøring, indtil det dufter nøddeagtigt.",
+          "Tilsæt kakaoen til smørret og rør godt, så det bliver en ensartet blanding.",
+          "I en skål, pisk æggene sammen med sukker og brun farin, indtil blandingen bliver luftig.",
+          "Vend forsigtigt smør/kakao-blandingen i ægge-sukkerblandingen.",
+          "Tilsæt mel, vaniljepulver, salt og hakket chokolade. Rør forsigtigt sammen, indtil alt er godt blandet.",
+          "Hæld dejen i et smurt fad og bag i ovnen på 175 grader i ca. 20-25 minutter.",
+          "Lad browniesene køle af, skær dem i firkanter og servér."
+        ]
+      },
+        
+        "Nutella-banan pizza": {
+          "Ingredienser": [
+            "Nutella",
+            "1 stor banan, skåret i skiver"
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Smør Nutella på pizzadejen.",
+            "Skær bananen i skiver og fordel dem over Nutella'en.",
+            "Bag pizzaen i ovnen efter pizzadejens anvisninger.",
+            "Server pizzaen straks.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Nicecream med chokolade": {
+          "Ingredienser": [
+            "2 stk. banan",
+            "0,5 dl. mælk",
+            "3 spsk. bagekakao",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Del bananer i stykker og frys 2/3 af dem.",
+            "Blend de frosne bananstykker med den friske banan i en skål.",
+            "Tilsæt bagekakao og mælk. Blend indtil det har en glat konsistens.",
+            "Læg skålen i fryseren i 10 minutter for at give isen en mere fast konsistens.",
+            "Top isen med friske bær, hakket chokolade, nødder eller andet efter ønske.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        },
+
+        "Nicecream med skyr, banan og peanutbutter": {
+          "Ingredienser": [
+            "3 frosne, modne bananer (ca. 450 g)",
+            "2 dl skyr med vanilje",
+            "3 spsk peanutbutter",
+            "Topping:",
+            "2 spsk peanutbutter",
+            "15 g grofthakket mørk chokolade",
+            "15 g grofthakkede peanuts",
+            // ... (tilføj flere ingredienser efter behov)
+          ],
+          "Fremgangsmåde": [
+            "Blend de frosne bananer, skyr og 3 spsk peanutbutter i ca. 2 minutter, indtil det bliver en tyk og jævn nicecream.",
+            "Fordel nicecream i to skåle.",
+            "Læg 1 spiseskefuld peanutbutter på toppen af hver skål med nicecream.",
+            "Drys med mørk chokolade og peanuts.",
+            "Stik en isvaffel i hver skål.",
+            "Server straks med ske.",
+            // ... (tilføj flere trin efter behov)
+          ]
+        }
+      }, // her afsluttes denne katetgori
+
+      // ... (tilføj flere kategorier og opskrifter efter behov)
+
+    };  // ... (afslut dataobjektet, altså hele "databasen")
+
+
+
+
+
+    /* Skabelon til at tilføje flere opskrifter
+      "Ret": {
+        "Ingredienser": [
+          "Ingrediens 1",
+          "Ingrediens 2",
+          "Ingrediens 3",
+          // ... (tilføj flere ingredienser efter behov)
+        ],
+        "Fremgangsmåde": [
+          "Fremgangsmåde - step 1",
+          "Fremgangsmåde - step 2",
+          // ... (tilføj flere trin efter behov)
+        ]
+      }, // Husk komma her, GPT plejer at glemme
+    */
+
+
+
+
+    var currentCategory = "";
+    var currentRecipeIndex = -1;
+
+    // Funktionen til at udfylde dropdown-menuen med kategorier
+    function populateDropdown() {
+      var foodTypeDropdown = document.getElementById("foodType");
+      for (var category in data) {
+        var option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        foodTypeDropdown.appendChild(option);
+      }
+    }
+
+    // Funktionen til at vise opskriften og ingredienserne
+    function showRecipe() {
+      if (currentRecipeIndex === -1) {
+        document.getElementById("text").innerHTML = "";
+        document.getElementById("recipeDetails").style.display = "none";
+        document.getElementById("recipeDescription").innerHTML = "";
+      } else {
+        var categoryData = data[currentCategory];
+        var recipes = Object.keys(categoryData);
+        var currentRecipe = recipes[currentRecipeIndex];
+
+        if (typeof categoryData[currentRecipe] === "object") {
+          // Dette er en opskrift med ingredienser og fremgangsmåde
+          var recipeHTML = "<strong>Ingredienser:</strong><ul id=\"ingredientList\">";
+          categoryData[currentRecipe]["Ingredienser"].forEach(function (ingredient) {
+            // store original text in data-original so we can scale without mutating the source
+            recipeHTML += "<li class=\"ingredient-item\" data-original=\"" + escapeHtml(ingredient) + "\">" + escapeHtml(ingredient) + "</li>";
+          });
+          recipeHTML += "</ul><strong>Fremgangsmåde:</strong><ol>";
+          categoryData[currentRecipe]["Fremgangsmåde"].forEach(function (step) {
+            recipeHTML += "<li>" + escapeHtml(step) + "</li>";
+          });
+          recipeHTML += "</ol>";
+          document.getElementById("text").innerHTML = currentRecipe;
+          document.getElementById("recipeDetails").style.display = "block";
+          document.getElementById("scalingControls").style.display = "block";
+          document.getElementById("recipeDescription").innerHTML = recipeHTML;
+          // start with empty multiplier
+          if (document.getElementById('scaleMultiplier')) document.getElementById('scaleMultiplier').value = '';
+        } else {
+          // Dette er en almindelig opskriftsbeskrivelse
+          document.getElementById("text").innerHTML = currentRecipe;
+          document.getElementById("recipeDetails").style.display = "block";
+          document.getElementById("recipeDescription").innerHTML = categoryData[currentRecipe];
+          document.getElementById("scalingControls").style.display = "none";
+        }
+      }
+    }
+
+    // Funktionen til at vise næste opskrift
+    function showNextRecipe() {
+      var categoryData = data[currentCategory];
+      var recipes = Object.keys(categoryData);
+      currentRecipeIndex = (currentRecipeIndex + 1) % recipes.length;
+      showRecipe();
+    }
+
+    // Funktionen til at vise forrige opskrift
+    function showPreviousRecipe() {
+      var categoryData = data[currentCategory];
+      var recipes = Object.keys(categoryData);
+      currentRecipeIndex = (currentRecipeIndex - 1 + recipes.length) % recipes.length;
+      showRecipe();
+    }
+
+    // Funktionen til at ændre kategorien
+    function changeCategory() {
+      currentCategory = document.getElementById("foodType").value;
+      currentRecipeIndex = 0;
+      showRecipe();
+    }
+
+    // Udfyld dropdown-menuen
+    populateDropdown();
+
+    // Lyt efter klik på knapper og kategoriændringer
+    document.getElementById("previousButton").addEventListener("click", showPreviousRecipe);
+    document.getElementById("nextButton").addEventListener("click", showNextRecipe);
+    document.getElementById("foodType").addEventListener("change", changeCategory);
+
+    // --- Simple helper functions for scaling ---
+    function escapeHtml(text) {
+      if (!text && text !== 0) return '';
+      return String(text).replace(/[&"'<>]/g, function (s) {
+        return ({'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'})[s];
+      });
+    }
+
+    function extractServingsFromRecipeName(name) {
+      if (!name) return null;
+      var m = name.match(/(\d+[\.,]?\d*)\s*(deje|dej|personer|person|stk|styk|stykker)?/i);
+      if (m) {
+        return parseFloat(String(m[1]).replace(',', '.')) || null;
+      }
+      return null;
+    }
+
+    function parseQuantityToken(q) {
+      if (!q) return null;
+      q = q.trim();
+      var mixed = q.match(/^(\d+)\s+(\d+)\/(\d+)$/);
+      if (mixed) return parseInt(mixed[1], 10) + (parseInt(mixed[2], 10) / parseInt(mixed[3], 10));
+      // support a/b where a or b can be decimals using comma or dot
+      var frac = q.match(/^(\d+(?:[\.,]\d+)?)\s*\/\s*(\d+(?:[\.,]\d+)?)$/);
+      if (frac) {
+        var num = parseFloat(String(frac[1]).replace(',', '.'));
+        var den = parseFloat(String(frac[2]).replace(',', '.'));
+        if (isNaN(num) || isNaN(den) || den === 0) return null;
+        return num / den;
+      }
+      var dec = q.replace(',', '.');
+      var n = parseFloat(dec);
+      return isNaN(n) ? null : n;
+    }
+
+    function formatNumberForDisplay(n) {
+      if (Math.abs(n - Math.round(n)) < 1e-9) return String(Math.round(n));
+      var s = n.toFixed(2);
+      s = s.replace(/\.00$/, '');
+      s = s.replace(/(\.\d)0$/, '$1');
+      return s.replace('.', ',');
+    }
+
+    function scaleIngredientString(s, factor) {
+      if (!s || !factor || factor === 1) return s;
+      return s.replace(/(\d+\s+\d+\/\d+|\d+\/\d+|\d+[\.,]?\d*)(?:\s*(?:[-–]\s*(\d+[\.,]?\d*)))?/g, function(match, a, b) {
+        if (b) {
+          var n1 = parseQuantityToken(a);
+          var n2 = parseQuantityToken(b);
+          if (n1 === null || n2 === null) return match;
+          return formatNumberForDisplay(n1 * factor) + '-' + formatNumberForDisplay(n2 * factor);
+        }
+        var n = parseQuantityToken(a);
+        if (n === null) return match;
+        return formatNumberForDisplay(n * factor);
+      });
+    }
+
+    function scaleDisplayedIngredients() {
+      var raw = (document.getElementById('scaleMultiplier') && document.getElementById('scaleMultiplier').value) || '';
+      raw = String(raw).trim();
+      // allow inputs like "1.2", "1,2", "1 1/2" or "1000/800"
+      var mult = parseQuantityToken(raw);
+      if (isNaN(mult) || mult <= 0 || mult === null) { alert('Indtast en gyldig multiplikator (fx 2 eller 1000/800) i boksen Skaler.'); return; }
+      var items = document.querySelectorAll('.ingredient-item');
+      items.forEach(function(li){
+        var orig = li.getAttribute('data-original') || li.textContent;
+        li.textContent = scaleIngredientString(orig, mult);
+      });
+    }
+
+    function resetScaledIngredients() {
+      var items = document.querySelectorAll('.ingredient-item');
+      items.forEach(function(li){
+        var orig = li.getAttribute('data-original') || li.textContent;
+        li.textContent = orig;
+      });
+      if (document.getElementById('scaleMultiplier')) document.getElementById('scaleMultiplier').value = '';
+    }
+
+    // wire new buttons
+    document.getElementById('scaleButton').addEventListener('click', scaleDisplayedIngredients);
+    document.getElementById('resetScaleButton').addEventListener('click', resetScaledIngredients);
+
+    // Funktionen til at vise en tilfældig opskrift på tværs af alle kategorier
+    function showRandomRecipe() {
+      var allCategories = Object.keys(data).filter(function (category) {
+        return category !== ""; // Filtrer ud blank kategori
+      });
+
+      if (allCategories.length === 0) {
+        alert("Ingen opskrifter tilgængelige.");
+        return;
+      }
+
+      var randomCategoryIndex = Math.floor(Math.random() * allCategories.length);
+      var randomCategory = allCategories[randomCategoryIndex];
+
+      var categoryData = data[randomCategory];
+      var recipes = Object.keys(categoryData);
+      currentCategory = randomCategory;
+      currentRecipeIndex = Math.floor(Math.random() * recipes.length);
+
+      showRecipe();
+    }
+
+    // Lyt efter klik på "I'm feeling lucky" knappen
+    document.getElementById("luckyButton").addEventListener("click", showRandomRecipe);
+  </script>
+</body>
+
+</html>
